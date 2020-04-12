@@ -53,7 +53,7 @@ namespace TaskManagementService.DBContext
                     Description = "d Package",
                     StartDate = DateTime.Now,
                     FinishDate = DateTime.Now,
-                    State = ServiceSubtask.CurrentState.IN_PROGRESS
+                    State = ServiceSubtask.CurrentState.PLANNED
 
 
                 },
@@ -78,7 +78,7 @@ namespace TaskManagementService.DBContext
                      Description = "a Package",
                      StartDate = DateTime.Now,
                      FinishDate = DateTime.Now,
-                     State = ServiceSubtask.CurrentState.IN_PROGRESS
+                     State = ServiceSubtask.CurrentState.PLANNED
 
 
 
@@ -91,7 +91,7 @@ namespace TaskManagementService.DBContext
                       Description = "b Package",
                       StartDate = DateTime.Now,
                       FinishDate = DateTime.Now,
-                      State = ServiceSubtask.CurrentState.IN_PROGRESS
+                      State = ServiceSubtask.CurrentState.PLANNED
 
 
 

@@ -25,114 +25,264 @@ namespace TaskManagementService.Controllers
             _mapper = mapper;
         }
 
+
+        //Api/Task/{Id}/Subtask/{Id}
         [HttpPost]
         public ActionResult Post(int taskId, [FromBody]SubTaskDetail model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(model);
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(model);
+                }
 
-            var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
-               FirstOrDefault(m => m.TaskId == taskId);
-            if (Atask == null)
-            {
-                return NotFound();
+                var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
+                   FirstOrDefault(m => m.TaskId == taskId);
+                if (Atask == null)
+                {
+                    return NotFound();
+                }
+                var TaskDt = _mapper.Map<ServiceSubtask>(model);
+                Atask.ServiceSubtask.Add(TaskDt);
+
+
+                var k = _taskcontext.Tasks.FirstOrDefault(m=>m.TaskId == taskId);
+                var list = k.ServiceSubtask.ToList();
+                foreach( var i in list.Select(e=>e.State ).ToList())
+                {
+                    if (i == "Completed")
+                    {
+                        Atask.State = "Completed";
+                    }
+                    else if(i== "inProgress")
+                    {
+                        Atask.State = "inProgress";
+                    }
+                    else
+                    {
+                        Atask.State = "Planned";
+                    }
+                                 
+                    
+                }
+                _taskcontext.SaveChanges();
+
+
+
+                return Ok("Created Successfully");
             }
-            var TaskDt = _mapper.Map<ServiceSubtask>(model);
-            Atask.ServiceSubtask.Add(TaskDt);
-            _taskcontext.SaveChanges();
-            return Created($"api/Task/{taskId}", null);
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+           
         }
+
+        //Api/Task/{Id}/Subtask/{Id}
 
         [HttpGet]
         public ActionResult Get(int taskId)
         {
-            var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
-                FirstOrDefault(m => m.TaskId == taskId);
-            if (Atask == null)
+            try
             {
-                return NotFound();
+                var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
+              FirstOrDefault(m => m.TaskId == taskId);
+                if (Atask == null)
+                {
+                    return NotFound();
+                }
+                var TaskDt = _mapper.Map<List<SubTaskDetail>>(Atask.ServiceSubtask);
+                return Ok(TaskDt);
             }
-            var TaskDt = _mapper.Map<List<SubTaskDetail>>(Atask.ServiceSubtask);
-            return Ok(TaskDt);
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+           
         }
 
-         [HttpGet("{subtaskid}")]
+
+        //Api/Task/{Id}/Subtask/{Id}
+        [HttpGet("{subtaskid}")]
          public ActionResult<SubTaskDetail> Get(int taskId,int subtaskid)
          {
-             var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
-                   FirstOrDefault(m => m.TaskId == taskId);
-             if (Atask == null)
-             {
-                 return NotFound();
-             }
+            try {
+                var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
+                     FirstOrDefault(m => m.TaskId == taskId);
+                if (Atask == null)
+                {
+                    return NotFound();
+                }
 
-             var Stask = Atask.ServiceSubtask.FirstOrDefault(l => l.SubTaskId == subtaskid);
-            if (Stask == null)
-            {
-                return NotFound();
+                var Stask = Atask.ServiceSubtask.FirstOrDefault(l => l.SubTaskId == subtaskid);
+                if (Stask == null)
+                {
+                    return NotFound();
+                }
+                var sTask = new SubTaskDetail();
+                sTask.SubTaskId = Stask.SubTaskId;
+                sTask.Name = Stask.Name;
+                sTask.Description = Stask.Description;
+                sTask.StartDate = Stask.StartDate; 
+                sTask.FinishDate = Stask.FinishDate;
+                sTask.State = Stask.State;
+
+                var update = _taskcontext.Tasks.Include(m => m.ServiceSubtask).FirstOrDefault(m => m.TaskId == taskId);
+                var list = update.ServiceSubtask.ToList();
+                foreach (var i in list.Select(e => e.State).ToList())
+                {
+                    if (i == "Completed")
+                    {
+                        update.State = "Completed";
+                    }
+                    else if (i == "inProgress")
+                    {
+                        update.State = "inProgress";
+                    }
+                    else
+                    {
+                        update.State = "Planned";
+                    }
+
+
+                }
+
+
+                return Ok(sTask);
             }
-             var sTask = new SubTaskDetail();
-             sTask.SubTaskId = Stask.SubTaskId;
-             sTask.Name = Stask.Name;
-             sTask.Description = Stask.Description;
-             sTask.StartDate = Stask.StartDate;
-             sTask.FinishDate = Stask.FinishDate;
-             sTask.State = Stask.State;
-
-             // var Stask = _taskcontext.SubTasks.Find(subtaskid);         
-             return Ok(sTask);
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+           
          }
 
 
+        //Api/Task/{ID}/Subtask
         [HttpDelete]
         public ActionResult  Delete(int taskId)
         {
-            var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
-                FirstOrDefault(m => m.TaskId == taskId);
-            if (Atask == null)
+            try
             {
-                return NotFound();
+                var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
+         FirstOrDefault(m => m.TaskId == taskId);
+                if (Atask == null)
+                {
+                    return NotFound();
+                }
+                _taskcontext.SubTasks.RemoveRange(Atask.ServiceSubtask);
+                _taskcontext.SaveChanges();
+                return Ok("Deleted All Subtasks");
             }
-            _taskcontext.SubTasks.RemoveRange(Atask.ServiceSubtask);
-            _taskcontext.SaveChanges();
-            return NoContent();
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+       
         }
+
+        //Api/Task/{ID}/Subtask/{Id}
 
         [HttpDelete("{subtaskid}")]
-        public ActionResult Delete(int taskId,int subtaskid)
+        public ActionResult Delete(int taskid,int subtaskid)
         {
-            var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
-                FirstOrDefault(m => m.TaskId == taskId);
-            if (Atask == null)
-            {
-                return NotFound();
-            }
+            try {
+                var Atask = _taskcontext.SubTasks. FirstOrDefault(m => m.SubTaskId == subtaskid);
+                if (Atask == null)
+                {
+                    return NotFound();
+                }
+                _taskcontext.SubTasks.Remove(Atask);
 
-             var Stask = Atask.ServiceSubtask.FirstOrDefault(l => l.SubTaskId == subtaskid);
-            _taskcontext.SubTasks.Remove(Stask);
-            _taskcontext.SaveChanges();
-            return NoContent();
+
+                var update = _taskcontext.Tasks.Include(m => m.ServiceSubtask).FirstOrDefault(m => m.TaskId == taskid);
+                var list = update.ServiceSubtask.ToList();
+                foreach (var i in list.Select(e => e.State).ToList())
+                {
+                    if (i == "Completed")
+                    {
+                        update.State = "Completed";
+                    }
+                    else if (i == "inProgress")
+                    {
+                        update.State = "inProgress";
+                    }
+                    else
+                    {
+                        update.State = "Planned";
+                    }
+
+
+                }
+
+                _taskcontext.SaveChanges();
+                return Ok("Deleted Successfully");
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+
+            }
+         
         }
 
+        //Api/Task/{ID}/Subtask/{Id}
 
         [HttpPut("{id}")]
-        public ActionResult UpdateSubTask(int id, [FromBody]SubTaskDetail task)
+        public ActionResult UpdateSubTask(int taskid,int id, [FromBody]SubTaskDetail task)
         {
-            var dbTask = _taskcontext.SubTasks
-         .FirstOrDefault(s => s.SubTaskId.Equals(id));
+            try {
+                var Atask = _taskcontext.Tasks.Include(m=>m.ServiceSubtask)
+            .FirstOrDefault(s => s.TaskId == taskid);
 
-            dbTask.Name = task.Name;
-            dbTask.Description = task.Description;
-            dbTask.StartDate = task.StartDate;
-            dbTask.FinishDate = task.FinishDate;
-            dbTask.State = task.State;
+                if (Atask == null)
+                {
+                    return NotFound();
+                }
+
+                var update = Atask.ServiceSubtask.FirstOrDefault(l => l.SubTaskId == id);
+                if (update == null)
+                {
+                    return NotFound();
+                }
 
 
-            _taskcontext.SaveChanges();
+                update.Name = task.Name;
+                update.Description = task.Description;
+                update.StartDate = task.StartDate;
+                update.FinishDate = task.FinishDate;
+                update.State = task.State;
 
-            return Ok(dbTask);
+                var k = _taskcontext.Tasks.Include(m => m.ServiceSubtask).FirstOrDefault(m => m.TaskId.Equals(taskid));
+                var list = k.ServiceSubtask.ToList();
+                foreach (var i in list.Select(e => e.State).ToList())
+                {
+                    if (i == "Completed")
+                    {
+                        Atask.State = "Completed";
+                    }
+                    else if (i == "inProgress")
+                    {
+                        Atask.State = "inProgress";
+                    }
+                    else
+                    {
+                        Atask.State = "Planned";
+                    }
+
+
+                }
+
+                _taskcontext.SaveChanges();
+
+                return Ok("Updated Successfully");
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+           
         }
 
 

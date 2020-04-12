@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TaskManagementService.Models;
 
 namespace TaskManagementService.DBContext.Entities
 {
@@ -23,9 +24,9 @@ namespace TaskManagementService.DBContext.Entities
 
         public class CurrentState
         {
-            public const string PLANNED = "planned";
-            public const string IN_PROGRESS = "in_progress";
-            public const string COMPLETED = "completed";
+            public const string PLANNED = "Planned";
+            public const string IN_PROGRESS = "inProgress";
+            public const string COMPLETED = "Completed";
         }
 
     }
