@@ -28,7 +28,7 @@ namespace TaskManagementService.Controllers
 
         //Api/Task/{Id}/Subtask/{Id}
         [HttpPost]
-        public ActionResult Post(int taskId, [FromBody]SubTaskDetail model)
+        public ActionResult Post(int taskid, [FromBody]SubTaskDetail model)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace TaskManagementService.Controllers
                 }
 
                 var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
-                   FirstOrDefault(m => m.TaskId == taskId);
+                   FirstOrDefault(m => m.TaskId == taskid);
                 if (Atask == null)
                 {
                     return NotFound();
@@ -47,15 +47,15 @@ namespace TaskManagementService.Controllers
                 Atask.ServiceSubtask.Add(TaskDt);
 
 
-                var k = _taskcontext.Tasks.FirstOrDefault(m=>m.TaskId == taskId);
+                var k = _taskcontext.Tasks.FirstOrDefault(m=>m.TaskId == taskid);
                 var list = k.ServiceSubtask.ToList();
                 foreach( var i in list.Select(e=>e.State ).ToList())
                 {
-                    if (i == "Completed")
+                    if (i == "Completed" || i == "completed")
                     {
                         Atask.State = "Completed";
                     }
-                    else if(i== "inProgress")
+                    else if (i == "inProgress" || i == "InProgress" || i == "inprogress" || i == "Inprogress")
                     {
                         Atask.State = "inProgress";
                     }
@@ -82,17 +82,36 @@ namespace TaskManagementService.Controllers
         //Api/Task/{Id}/Subtask/{Id}
 
         [HttpGet]
-        public ActionResult Get(int taskId)
+        public ActionResult Get(int taskid)
         {
             try
             {
                 var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
-              FirstOrDefault(m => m.TaskId == taskId);
+              FirstOrDefault(m => m.TaskId == taskid);
                 if (Atask == null)
                 {
                     return NotFound();
                 }
                 var TaskDt = _mapper.Map<List<SubTaskDetail>>(Atask.ServiceSubtask);
+                var update = _taskcontext.Tasks.Include(m => m.ServiceSubtask).FirstOrDefault(m => m.TaskId == taskid);
+                var list = update.ServiceSubtask.ToList();
+                foreach (var i in list.Select(e => e.State).ToList())
+                {
+                    if (i == "Completed" || i == "completed")
+                    {
+                        update.State = "Completed";
+                    }
+                    else if (i == "inProgress" || i == "InProgress" || i == "inprogress" || i == "Inprogress")
+                    {
+                        update.State = "inProgress";
+                    }
+                    else
+                    {
+                        update.State = "Planned";
+                    }
+
+
+                }
                 return Ok(TaskDt);
             }
             catch(Exception ex)
@@ -105,11 +124,11 @@ namespace TaskManagementService.Controllers
 
         //Api/Task/{Id}/Subtask/{Id}
         [HttpGet("{subtaskid}")]
-         public ActionResult<SubTaskDetail> Get(int taskId,int subtaskid)
+         public ActionResult<SubTaskDetail> Get(int taskid,int subtaskid)
          {
             try {
                 var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
-                     FirstOrDefault(m => m.TaskId == taskId);
+                     FirstOrDefault(m => m.TaskId == taskid);
                 if (Atask == null)
                 {
                     return NotFound();
@@ -128,15 +147,15 @@ namespace TaskManagementService.Controllers
                 sTask.FinishDate = Stask.FinishDate;
                 sTask.State = Stask.State;
 
-                var update = _taskcontext.Tasks.Include(m => m.ServiceSubtask).FirstOrDefault(m => m.TaskId == taskId);
+                var update = _taskcontext.Tasks.Include(m => m.ServiceSubtask).FirstOrDefault(m => m.TaskId == taskid);
                 var list = update.ServiceSubtask.ToList();
                 foreach (var i in list.Select(e => e.State).ToList())
                 {
-                    if (i == "Completed")
+                    if (i == "Completed" || i == "completed")
                     {
                         update.State = "Completed";
                     }
-                    else if (i == "inProgress")
+                    else if (i == "inProgress" || i == "InProgress" || i == "inprogress" || i == "Inprogress")
                     {
                         update.State = "inProgress";
                     }
@@ -161,12 +180,12 @@ namespace TaskManagementService.Controllers
 
         //Api/Task/{ID}/Subtask
         [HttpDelete]
-        public ActionResult  Delete(int taskId)
+        public ActionResult  Delete(int taskid)
         {
             try
             {
                 var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
-         FirstOrDefault(m => m.TaskId == taskId);
+         FirstOrDefault(m => m.TaskId == taskid);
                 if (Atask == null)
                 {
                     return NotFound();
@@ -200,11 +219,11 @@ namespace TaskManagementService.Controllers
                 var list = update.ServiceSubtask.ToList();
                 foreach (var i in list.Select(e => e.State).ToList())
                 {
-                    if (i == "Completed")
-                    {
+                    if (i == "Completed" || i == "completed")
+                        {
                         update.State = "Completed";
                     }
-                    else if (i == "inProgress")
+                    else if (i == "inProgress" || i == "InProgress" || i == "inprogress" || i == "Inprogress")
                     {
                         update.State = "inProgress";
                     }
@@ -230,7 +249,7 @@ namespace TaskManagementService.Controllers
         //Api/Task/{ID}/Subtask/{Id}
 
         [HttpPut("{id}")]
-        public ActionResult UpdateSubTask(int taskid,int id, [FromBody]SubTaskDetail task)
+        public ActionResult put(int taskid,int id, [FromBody]SubTaskDetail task)
         {
             try {
                 var Atask = _taskcontext.Tasks.Include(m=>m.ServiceSubtask)
@@ -258,11 +277,11 @@ namespace TaskManagementService.Controllers
                 var list = k.ServiceSubtask.ToList();
                 foreach (var i in list.Select(e => e.State).ToList())
                 {
-                    if (i == "Completed")
+                    if (i == "Completed" || i == "completed")
                     {
                         Atask.State = "Completed";
                     }
-                    else if (i == "inProgress")
+                    else if (i == "inProgress"|| i == "InProgress"|| i == "inprogress"|| i == "Inprogress")
                     {
                         Atask.State = "inProgress";
                     }

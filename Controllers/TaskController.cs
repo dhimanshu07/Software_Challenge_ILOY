@@ -20,16 +20,14 @@ namespace TaskManagementService.Controllers
     {
         private readonly TaskContext _taskcontext;
         private readonly IMapper _mapper;
-        private readonly ITaskRepository _taskRepository;
-        public TaskController(TaskContext taskcontext, IMapper mapper, ITaskRepository taskRepository)
+        public TaskController(TaskContext taskcontext, IMapper mapper)
         {
             _taskcontext = taskcontext;
             _mapper = mapper;
-            _taskRepository = taskRepository;
         }
         // GET: api/Task
         [HttpGet]
-        public ActionResult<TaskDetail> Get()
+        public ActionResult Get()
         {
             try
             {
@@ -38,7 +36,7 @@ namespace TaskManagementService.Controllers
                 {
                     return NotFound();
                 }
-                var TaskDt = _mapper.Map<List<TaskDetail>>(Atask);
+                var TaskDt = _mapper.Map<List<ServiceTask>>(Atask);
                 return Ok(TaskDt);
             }
             catch(Exception ex)
@@ -51,7 +49,7 @@ namespace TaskManagementService.Controllers
 
         // GET: api/Task/5
         [HttpGet("{id}")]
-        public ActionResult<TaskDetail> Get(int id)
+        public ActionResult Get(int id)
         {
             try {
                 var Atask = _taskcontext.Tasks.Include(m => m.ServiceSubtask).
@@ -60,8 +58,27 @@ namespace TaskManagementService.Controllers
                 {
                     return NotFound();
                 }
-                var TaskDt = _mapper.Map<TaskDetail>(Atask);
-                return Ok(TaskDt);
+              //  var TaskDt = _mapper.Map<TaskDetail>(Atask);
+                var update = _taskcontext.Tasks.Include(m => m.ServiceSubtask).FirstOrDefault(m => m.TaskId == id);
+                var list = update.ServiceSubtask.ToList();
+                foreach (var i in list.Select(e => e.State).ToList())
+                {
+                    if (i == "Completed" || i == "completed")
+                    {
+                        update.State = "Completed";
+                    }
+                    else if (i == "inProgress" || i == "InProgress" || i == "inprogress" || i == "Inprogress")
+                    {
+                        update.State = "inProgress";
+                    }
+                    else
+                    {
+                        update.State = "Planned";
+                    }
+
+
+                }
+                return Ok(Atask);
 
             }
             catch(Exception ex)
@@ -75,7 +92,7 @@ namespace TaskManagementService.Controllers
 
         // POST: api/Task
         [HttpPost]
-        public IActionResult Post([FromBody] ServiceTask task)
+        public IActionResult Post([FromBody] TaskDetail task)
         {
             try
             {
@@ -86,6 +103,7 @@ namespace TaskManagementService.Controllers
                 dbTask.FinishDate = task.FinishDate;
                 dbTask.State = task.State;
                 _taskcontext.Add(dbTask);
+
                 _taskcontext.SaveChanges();
                 return Ok("Created Successfully");
             }
@@ -100,7 +118,7 @@ namespace TaskManagementService.Controllers
 
         // PUT: api/Task/5
         [HttpPut("{id}")]
-        public IActionResult UpdateTask(int id, [FromBody]TaskDetail task)
+        public IActionResult Put(int id, [FromBody]TaskDetail task)
         {
             try {
                 var dbTask = _taskcontext.Tasks
@@ -116,11 +134,11 @@ namespace TaskManagementService.Controllers
                 var list = update.ServiceSubtask.ToList();
                 foreach (var i in list.Select(e => e.State).ToList())
                 {
-                    if (i == "Completed")
+                    if (i == "Completed" || i == "completed")
                     {
                         update.State = "Completed";
                     }
-                    else if (i == "inProgress")
+                    else if (i == "inProgress" || i == "InProgress" || i == "inprogress" || i == "Inprogress")
                     {
                         update.State = "inProgress";
                     }

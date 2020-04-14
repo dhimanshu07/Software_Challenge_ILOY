@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TaskManagementService.Migrations
 {
-    public partial class Intial : Migration
+    public partial class Main : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,22 +51,22 @@ namespace TaskManagementService.Migrations
             migrationBuilder.InsertData(
                 table: "Tasks",
                 columns: new[] { "TaskId", "Description", "FinishDate", "Name", "StartDate", "State" },
-                values: new object[] { 1, "Clothes Package", new DateTime(2020, 4, 10, 14, 33, 1, 391, DateTimeKind.Local).AddTicks(6492), "Clothing", new DateTime(2020, 4, 10, 14, 33, 1, 387, DateTimeKind.Local).AddTicks(6057), "in_progress" });
+                values: new object[] { 1, "Clothes Package", new DateTime(2020, 4, 13, 11, 41, 6, 244, DateTimeKind.Local).AddTicks(4070), "Clothing", new DateTime(2020, 4, 13, 11, 41, 6, 241, DateTimeKind.Local).AddTicks(2311), "inProgress" });
 
             migrationBuilder.InsertData(
                 table: "Tasks",
                 columns: new[] { "TaskId", "Description", "FinishDate", "Name", "StartDate", "State" },
-                values: new object[] { 2, "Bride Dress", new DateTime(2020, 4, 10, 14, 33, 1, 392, DateTimeKind.Local).AddTicks(104), "Dresses", new DateTime(2020, 4, 10, 14, 33, 1, 392, DateTimeKind.Local).AddTicks(72), "in_progress" });
+                values: new object[] { 2, "Bride Dress", new DateTime(2020, 4, 13, 11, 41, 6, 244, DateTimeKind.Local).AddTicks(5496), "Dresses", new DateTime(2020, 4, 13, 11, 41, 6, 244, DateTimeKind.Local).AddTicks(5475), "inProgress" });
 
             migrationBuilder.InsertData(
                 table: "SubTasks",
                 columns: new[] { "SubTaskId", "Description", "FinishDate", "Name", "StartDate", "State", "TaskId" },
                 values: new object[,]
                 {
-                    { 1, "d Package", new DateTime(2020, 4, 10, 14, 33, 1, 393, DateTimeKind.Local).AddTicks(8682), "d", new DateTime(2020, 4, 10, 14, 33, 1, 393, DateTimeKind.Local).AddTicks(8647), "in_progress", 1 },
-                    { 2, "c Package", new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(103), "c", new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(74), "in_progress", 1 },
-                    { 3, "a Package", new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(134), "a", new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(130), "in_progress", 2 },
-                    { 4, "b Package", new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(142), "b", new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(138), "in_progress", 2 }
+                    { 1, "d Package", new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(6934), "d", new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(6913), "Planned", 1 },
+                    { 2, "c Package", new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7845), "c", new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7832), "inProgress", 1 },
+                    { 3, "a Package", new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7867), "a", new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7864), "Planned", 2 },
+                    { 4, "b Package", new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7872), "b", new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7870), "Planned", 2 }
                 });
 
             migrationBuilder.CreateIndex(

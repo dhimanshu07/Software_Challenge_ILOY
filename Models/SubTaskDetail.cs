@@ -14,7 +14,11 @@ namespace TaskManagementService.Models
         public int SubTaskId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime StartDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime FinishDate { get; set; }
         public string State { get; set; }
       
