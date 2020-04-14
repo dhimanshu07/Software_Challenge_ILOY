@@ -55,40 +55,40 @@ namespace TaskManagementService.Migrations
                         {
                             SubTaskId = 1,
                             Description = "d Package",
-                            FinishDate = new DateTime(2020, 4, 10, 14, 33, 1, 393, DateTimeKind.Local).AddTicks(8682),
+                            FinishDate = new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(6934),
                             Name = "d",
-                            StartDate = new DateTime(2020, 4, 10, 14, 33, 1, 393, DateTimeKind.Local).AddTicks(8647),
-                            State = "in_progress",
+                            StartDate = new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(6913),
+                            State = "Planned",
                             TaskId = 1
                         },
                         new
                         {
                             SubTaskId = 2,
                             Description = "c Package",
-                            FinishDate = new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(103),
+                            FinishDate = new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7845),
                             Name = "c",
-                            StartDate = new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(74),
-                            State = "in_progress",
+                            StartDate = new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7832),
+                            State = "inProgress",
                             TaskId = 1
                         },
                         new
                         {
                             SubTaskId = 3,
                             Description = "a Package",
-                            FinishDate = new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(134),
+                            FinishDate = new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7867),
                             Name = "a",
-                            StartDate = new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(130),
-                            State = "in_progress",
+                            StartDate = new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7864),
+                            State = "Planned",
                             TaskId = 2
                         },
                         new
                         {
                             SubTaskId = 4,
                             Description = "b Package",
-                            FinishDate = new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(142),
+                            FinishDate = new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7872),
                             Name = "b",
-                            StartDate = new DateTime(2020, 4, 10, 14, 33, 1, 394, DateTimeKind.Local).AddTicks(138),
-                            State = "in_progress",
+                            StartDate = new DateTime(2020, 4, 13, 11, 41, 6, 245, DateTimeKind.Local).AddTicks(7870),
+                            State = "Planned",
                             TaskId = 2
                         });
                 });
@@ -124,19 +124,19 @@ namespace TaskManagementService.Migrations
                         {
                             TaskId = 1,
                             Description = "Clothes Package",
-                            FinishDate = new DateTime(2020, 4, 10, 14, 33, 1, 391, DateTimeKind.Local).AddTicks(6492),
+                            FinishDate = new DateTime(2020, 4, 13, 11, 41, 6, 244, DateTimeKind.Local).AddTicks(4070),
                             Name = "Clothing",
-                            StartDate = new DateTime(2020, 4, 10, 14, 33, 1, 387, DateTimeKind.Local).AddTicks(6057),
-                            State = "in_progress"
+                            StartDate = new DateTime(2020, 4, 13, 11, 41, 6, 241, DateTimeKind.Local).AddTicks(2311),
+                            State = "inProgress"
                         },
                         new
                         {
                             TaskId = 2,
                             Description = "Bride Dress",
-                            FinishDate = new DateTime(2020, 4, 10, 14, 33, 1, 392, DateTimeKind.Local).AddTicks(104),
+                            FinishDate = new DateTime(2020, 4, 13, 11, 41, 6, 244, DateTimeKind.Local).AddTicks(5496),
                             Name = "Dresses",
-                            StartDate = new DateTime(2020, 4, 10, 14, 33, 1, 392, DateTimeKind.Local).AddTicks(72),
-                            State = "in_progress"
+                            StartDate = new DateTime(2020, 4, 13, 11, 41, 6, 244, DateTimeKind.Local).AddTicks(5475),
+                            State = "inProgress"
                         });
                 });
 
